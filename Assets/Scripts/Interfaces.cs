@@ -8,3 +8,8 @@ public interface IHealth
     
     public void TakeDamage(int damage);
 }
+
+public interface IInteractable
+{
+    public void Interact();
+}

@@ -39,6 +39,7 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private float rotSpeed = .2f;
     private float animFloatX;
     private float animFloatY;
+    private bool canRot;
 
     [Title("Look")]
     [SerializeField] private GameObject cameraBoom;
@@ -106,6 +107,7 @@ public class Player_Controller : MonoBehaviour
         currentSpeed = walkSpeed;
         Cursor.lockState = CursorLockMode.Locked;
         changingFloat = false;
+        canRot = true;
     }
  
     private void Look(InputAction.CallbackContext context)
@@ -144,6 +146,11 @@ public class Player_Controller : MonoBehaviour
             RotatePlayer();
         }
 
+        SetAnimationParams();
+    }
+
+    private void SetAnimationParams()
+    {
         if(IsGrounded() == false)
         {
             anim.SetFloat("X", 0f);
@@ -169,6 +176,7 @@ public class Player_Controller : MonoBehaviour
             {
                 animFloatY = moveVector.y;
                 animFloatX = moveVector.x;
+                anim.SetFloat("Y", animFloatY);
             }
         }
     }
@@ -275,10 +283,14 @@ public class Player_Controller : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             return;
 
+        canRot = false;
         canMove = false;
         anim.SetTrigger("Attack");
         isAttacking = true;
-        StartCoroutine(ResetAttackState(moveDelay));
+        if (this != null) // Null check before starting the coroutine
+        {
+            StartCoroutine(ResetAttackState(moveDelay));
+        }
     }
 
     private void RotatePlayer()
@@ -290,6 +302,8 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
+        if(canRot == false)
+            return;
 
         Vector3 forward = cameraBoom.transform.forward;
         Vector3 right = cameraBoom.transform.right;
@@ -332,6 +346,7 @@ public class Player_Controller : MonoBehaviour
     private IEnumerator ResetAttackState(float delay)
     {
         yield return new WaitForSeconds(delay);
+        canRot = true;
         canMove = true;
         isAttacking = false;
     }

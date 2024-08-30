@@ -17,12 +17,6 @@ public class Enemy : MonoBehaviour, IHealth
 
     [MaxValue(1000)]
     public int maxHealth;
-
-    [Button("Take Damage")]
-    private void NamedButton()
-    {
-        TakeDamage(10);
-    }
     private int currentHealth;
     private Animator anim;
 
@@ -31,17 +25,22 @@ public class Enemy : MonoBehaviour, IHealth
     public damageTaken damageEvent;
     public damageTaken deathEvent;
 
+    [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
+    private bool canTakeDamage;
+
     private void OnEnable()
     {
         anim = GetComponentInChildren<Animator>();
         currentHealth = maxHealth;
+        canTakeDamage = true;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        if(canTakeDamage == false)
+            return;
 
-        Debug.Log("here");
+        currentHealth -= damage;
 
         if(currentHealth <= 0)
         {
@@ -55,16 +54,19 @@ public class Enemy : MonoBehaviour, IHealth
 
         damageEvent?.Invoke();
         anim.SetTrigger("Take hit");
+
+        canTakeDamage = false;
+        StartCoroutine(DamageCoolDown());
+    }
+
+    private IEnumerator DamageCoolDown()
+    {
+        yield return new WaitForSeconds(damageCoolDown);
+        canTakeDamage = true;
     }
 
     public int GetCurrentHealth()
     {
         return currentHealth;
     }
-    
-    public void LockOn()
-    {
-        
-    }
-
 }
