@@ -16,7 +16,7 @@ public class PlayerHealthbar : MonoBehaviour
 
         slider.maxValue = ph.GetCurrentHealth();
         slider.value = ph.GetCurrentHealth();
-        ph.takeDamageEvent += AdjustHealthBar;
+        ph.takeDamageEvent.AddListener(AdjustHealthBar);
     }
 
     private void AdjustHealthBar()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour, IHealth
 {
@@ -18,9 +19,9 @@ public class EnemyHealth : MonoBehaviour, IHealth
     private Animator anim;
 
     // Take damage event and delegate
-    public delegate void damageTaken();
-    public damageTaken damageEvent;
-    public damageTaken deathEvent;
+    public UnityEvent deathEvent;
+
+    public UnityEvent damageEvent;
 
     [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
     private bool canTakeDamage;
