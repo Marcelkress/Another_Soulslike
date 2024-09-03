@@ -6249,7 +6249,7 @@ MonoBehaviour:
   - {fileID: 1826396287}
   - {fileID: 870903857}
   modelParent: {fileID: 194249775}
-  moveSpeed: 5
+  moveSpeed: 1
   reachedPointThreshold: 0.5
 --- !u!1001 &1284060973
 PrefabInstance:
