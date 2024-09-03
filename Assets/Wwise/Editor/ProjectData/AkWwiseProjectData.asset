@@ -334,6 +334,19 @@ MonoBehaviour:
     m_lastTime: -8584762373339651328
     List: []
   EventWwu:
+  - PhysicalPath: Events\Ambience.wwu
+    PathAndIcons:
+    - ElementName: Events
+      ObjectType: 5
+      guid: 00000000000000000000000000000000
+    - ElementName: Ambience
+      ObjectType: 12
+      guid: 90179fc65216b44ebff44693e21c4722
+    ParentPath: Events\Ambience
+    guid: 90179fc65216b44ebff44693e21c4722
+    GuidInternal: 
+    m_lastTime: -8584762364692312427
+    List: []
   - PhysicalPath: Events\Default Work Unit.wwu
     PathAndIcons:
     - ElementName: Events
@@ -557,7 +570,7 @@ MonoBehaviour:
     m_lastTime: -8584762373339791463
     List: []
   ExpandedFileSystemItemIds: 
-  ExpandedWaapiItemIds: 
+  ExpandedWaapiItemIds: 05000000060000000b0000000c000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
   currentDataSource: 0
