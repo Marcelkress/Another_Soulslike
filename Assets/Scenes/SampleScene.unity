@@ -729,6 +729,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDelay: 1
   weaponDamage: 30
+  PlayerAttack:
+    m_PersistentCalls:
+      m_Calls: []
   walkSpeed: 3
   sprintSpeed: 6
   transTimeToSprint: 0.2
@@ -929,6 +932,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  takeDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &142067620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6066,6 +6072,12 @@ MonoBehaviour:
   walkSpeed: 1
   minimumHealth: 0
   maxHealth: 100
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls: []
   damageCoolDown: 0.1
 --- !u!23 &1275586663
 MeshRenderer:
@@ -6146,10 +6158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3066bf24e12ec4b13a77825eed14d092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
-  modelParent: {fileID: 0}
-  moveSpeed: 0
-  reachedPointThreshold: 0
+  patrolPoints:
+  - {fileID: 2006326726}
+  - {fileID: 1826396287}
+  - {fileID: 870903857}
+  modelParent: {fileID: 194249775}
+  moveSpeed: 5
+  reachedPointThreshold: 0.5
 --- !u!1001 &1284060973
 PrefabInstance:
   m_ObjectHideFlags: 0

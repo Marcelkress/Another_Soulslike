@@ -21,8 +21,8 @@ public class FloatingBar : MonoBehaviour
         transform.SetParent(wsCanvas);
         slider.maxValue = enemy.maxHealth;
         slider.value = enemy.GetCurrentHealth();
-        enemy.damageEvent += UpdateBar;
-        enemy.deathEvent += Death;
+        enemy.damageEvent.AddListener(UpdateBar);
+        enemy.deathEvent.AddListener(Death);
     }
 
     // Update is called once per frame

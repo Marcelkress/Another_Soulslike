@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour, IHealth
 {
@@ -9,8 +10,7 @@ public class PlayerHealth : MonoBehaviour, IHealth
     public int maxHealth;
     private Animator anim;
 
-    public delegate void takeDamage();
-    public takeDamage takeDamageEvent;
+    public UnityEvent takeDamageEvent;
     
     [Button("Take Damage Test")]
     private void DefaultSizedButton()

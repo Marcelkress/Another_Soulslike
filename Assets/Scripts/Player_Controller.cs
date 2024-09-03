@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using System.ComponentModel;
+using UnityEngine.Events;
 
 public class Player_Controller : MonoBehaviour
 {   
@@ -26,6 +27,7 @@ public class Player_Controller : MonoBehaviour
     private bool canMove;
     private bool isAttacking;
     public int weaponDamage;
+    public UnityEvent PlayerAttack;
 
     [Title("Move")]
     [SerializeField] private float walkSpeed;
@@ -54,8 +56,6 @@ public class Player_Controller : MonoBehaviour
 
     [MaxValue(90)]
     [SerializeField] private int yMax = 85;
-
-    
 
     [Title("Lock On")]
     [SerializeField] private Transform lockOnObject;
@@ -284,6 +284,9 @@ public class Player_Controller : MonoBehaviour
         canRot = false;
         canMove = false;
         anim.SetTrigger("Attack");
+        
+        PlayerAttack?.Invoke();
+
         isAttacking = true;
         if (this != null) // Null check before starting the coroutine
         {
