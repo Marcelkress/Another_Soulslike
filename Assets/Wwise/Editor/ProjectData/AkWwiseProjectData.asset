@@ -331,9 +331,53 @@ MonoBehaviour:
     ParentPath: SoundBanks/Default Work Unit
     guid: 808d50a8f0cf7945985691641e9ecdc4
     GuidInternal: 
-    m_lastTime: -8584762367415691346
-    List: []
+    m_lastTime: -8584762355598359618
+    List:
+    - name: Main
+      guid: 4727354a85a1c4409f995d813b7aad3c
+      id: 3161908922
+      PathAndIcons:
+      - ElementName: SoundBanks
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 808d50a8f0cf7945985691641e9ecdc4
+      - ElementName: Main
+        ObjectType: 7
+        guid: 4727354a85a1c4409f995d813b7aad3c
+      Path: SoundBanks/Default Work Unit/Main
   EventWwu:
+  - PhysicalPath: Events/Ambience.wwu
+    PathAndIcons:
+    - ElementName: Events
+      ObjectType: 5
+      guid: 00000000000000000000000000000000
+    - ElementName: Ambience
+      ObjectType: 12
+      guid: 90179fc65216b44ebff44693e21c4722
+    ParentPath: Events/Ambience
+    guid: 90179fc65216b44ebff44693e21c4722
+    GuidInternal: 
+    m_lastTime: -8584762355598413398
+    List:
+    - name: Level1_Ambience
+      guid: e620d55a66ecbe42abd968e58deabac9
+      id: 2617416489
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Ambience
+        ObjectType: 12
+        guid: 90179fc65216b44ebff44693e21c4722
+      - ElementName: Level1_Ambience
+        ObjectType: 3
+        guid: e620d55a66ecbe42abd968e58deabac9
+      Path: Events/Ambience/Level1_Ambience
+      maxAttenuation: 0
+      maxDuration: 3.4010313
+      minDuration: 3.4010313
   - PhysicalPath: Events/Default Work Unit.wwu
     PathAndIcons:
     - ElementName: Events
