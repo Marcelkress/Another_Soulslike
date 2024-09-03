@@ -20,7 +20,6 @@ public class EnemyHealth : MonoBehaviour, IHealth
 
     // Take damage event and delegate
     public UnityEvent deathEvent;
-
     public UnityEvent damageEvent;
 
     [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
