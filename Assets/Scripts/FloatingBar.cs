@@ -11,13 +11,13 @@ public class FloatingBar : MonoBehaviour
     [SerializeField] private Vector3 offset;
 
     private Slider slider;
-    private Enemy enemy;
+    private EnemyHealth enemy;
 
     // Start is called before the first frame update
     void Start()
     {
         slider = GetComponent<Slider>();
-        enemy = GetComponentInParent<Enemy>();
+        enemy = GetComponentInParent<EnemyHealth>();
         transform.SetParent(wsCanvas);
         slider.maxValue = enemy.maxHealth;
         slider.value = enemy.GetCurrentHealth();

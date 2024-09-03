@@ -4,11 +4,8 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
 
-public class Enemy : MonoBehaviour, IHealth
+public class EnemyHealth : MonoBehaviour, IHealth
 {
-
-    [Range(1, 10)]
-    [HideLabel, InfoBox("How fast the enemy moves")]
     public int walkSpeed;
 
     [Title("Health")]

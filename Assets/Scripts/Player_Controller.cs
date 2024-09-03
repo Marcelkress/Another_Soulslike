@@ -118,8 +118,6 @@ public class Player_Controller : MonoBehaviour
     private void Move(InputAction.CallbackContext context)
     {
         moveVector = context.ReadValue<Vector2>();
-
-
     }
     private void Sprint(InputAction.CallbackContext context)
     {
@@ -361,8 +359,6 @@ public class Player_Controller : MonoBehaviour
 
     private void LockOn(InputAction.CallbackContext context)
     {
-        Debug.Log("lort");
-
         Transform target = FindTargetWithinRadius();
 
         if (target != null && lockedOn == false)
@@ -373,6 +369,7 @@ public class Player_Controller : MonoBehaviour
         }
         else
         {
+            Debug.Log("no target :(");
             lockOnObject = null;
             lockedOn = false;
         }

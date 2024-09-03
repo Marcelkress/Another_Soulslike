@@ -23,11 +23,13 @@ public class TentInteract : MonoBehaviour, IInteractable
     {
         if(isActive == true)
         {
+            // Close the menu
             customKnightCanvas.SetActive(false);
             isActive = false;
         }
         else
         {
+            // Open the menu
             customKnightCanvas.SetActive(true);
             isActive = true;
             OpenUIEvent?.Invoke();

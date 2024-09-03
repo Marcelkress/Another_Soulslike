@@ -6,13 +6,27 @@ using Sirenix.OdinInspector;
 public class PlayerHealth : MonoBehaviour, IHealth
 {
     private int currentHealth;
-    
-    [Title("Health")]
-    [MinValue(0)]
-    public int minimumHealth;
-
-    [MaxValue(1000)]
     public int maxHealth;
+    private Animator anim;
+
+    public delegate void takeDamage();
+    public takeDamage takeDamageEvent;
+    
+    [Button("Take Damage Test")]
+    private void DefaultSizedButton()
+    {
+        TakeDamage(20);
+    }
+
+    private void Awake()
+    {
+        currentHealth = maxHealth;
+    }
+
+    private void Start()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
 
     public int GetCurrentHealth()
     {
@@ -21,6 +35,9 @@ public class PlayerHealth : MonoBehaviour, IHealth
 
     public void TakeDamage(int damage)
     {
+        anim.SetTrigger("Take Hit");
         currentHealth -= damage;
+        Debug.Log(currentHealth);
+        takeDamageEvent?.Invoke();
     }
 }

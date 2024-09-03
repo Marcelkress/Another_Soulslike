@@ -26,7 +26,7 @@ public class ChooseKnight : MonoBehaviour
         displayModels[currentKnight].SetActive(true);
     }
 
-    public void Choose(int arrayValue)
+    public void Choose(int value)
     {
         foreach(GameObject model in playerModels)
         {
@@ -37,7 +37,7 @@ public class ChooseKnight : MonoBehaviour
             model.SetActive(false);
         }
         
-        currentKnight = arrayValue - 1; // Minus one because arrays start at 0
+        currentKnight = value - 1; // Minus one because arrays start at 0
 
         playerModels[currentKnight].SetActive(true);
         displayModels[currentKnight].SetActive(true);

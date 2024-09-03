@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Sirenix.OdinInspector;
+
+public class PlayerHealthbar : MonoBehaviour
+{
+    private Slider slider;
+    private PlayerHealth ph;
+
+    void Start()
+    {
+        slider = GetComponent<Slider>();  
+        ph = GetComponentInParent<PlayerHealth>();
+
+        slider.maxValue = ph.GetCurrentHealth();
+        slider.value = ph.GetCurrentHealth();
+        ph.takeDamageEvent += AdjustHealthBar;
+    }
+
+    private void AdjustHealthBar()
+    {
+        slider.value = ph.GetCurrentHealth();
+    }
+}
