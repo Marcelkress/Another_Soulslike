@@ -79,3 +79,6 @@ crashlytics-build.properties
 *.validationcache
 .wsettings
 IncrementalSoundBankData.xml
+
+
+**/.DS_Store
