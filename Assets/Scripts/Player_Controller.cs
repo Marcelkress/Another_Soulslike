@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using System.ComponentModel;
 using UnityEngine.Events;
+using Unity.Mathematics;
 
 public class Player_Controller : MonoBehaviour
 {   
@@ -139,7 +140,7 @@ public class Player_Controller : MonoBehaviour
     {   
         PerformMove();
 
-        if(moveVector != Vector3.zero)
+        if(moveVector != Vector3.zero || lockOnObject != null)
         {
             RotatePlayer();
         }
@@ -298,8 +299,12 @@ public class Player_Controller : MonoBehaviour
     {   
         if(lockOnObject != null)
         {
-            //StartCoroutine(SmoothRotate(desiredRotation));
-            characterTransform.LookAt(lockOnObject);
+            Vector3 pointVector = lockOnObject.position - transform.position;
+            pointVector.y = 0;
+            pointVector.Normalize();
+
+            StartCoroutine(SmoothRotate(pointVector));
+            //characterTransform.LookAt(lockOnObject);
             return;
         }
 
@@ -321,18 +326,19 @@ public class Player_Controller : MonoBehaviour
         if (desiredRotDir.sqrMagnitude > 0.0f)
         {
             // Create the desired rotation
-            Quaternion desiredRotation = Quaternion.LookRotation(desiredRotDir);
-
             // Apply the rotation to the character
-            StartCoroutine(SmoothRotate(desiredRotation));
+            StartCoroutine(SmoothRotate(desiredRotDir));
         }
     }
 
-    private IEnumerator SmoothRotate(Quaternion targetRotation)
+    private IEnumerator SmoothRotate(Vector3 targetVector)
     {
         float elapsedTime = 0f;
 
+        Quaternion targetRotation = Quaternion.LookRotation(targetVector);
         Quaternion initialRotation = characterTransform.localRotation;
+
+        targetRotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
 
         while (elapsedTime < rotSpeed)
         {
@@ -369,12 +375,15 @@ public class Player_Controller : MonoBehaviour
             Debug.Log("Target found: " + target.name);
             lockOnObject = target;
             lockedOn = true;
+            anim.SetBool("LockedOn", lockedOn);
         }
         else
         {
             Debug.Log("no target :(");
             lockOnObject = null;
             lockedOn = false;
+            anim.SetBool("LockedOn", lockedOn);
+
         }
     }
 
