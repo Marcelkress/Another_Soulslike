@@ -8,6 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private Transform modelParent;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float reachedPointThreshold;
+    [SerializeField] private float rotationSpeed;
 
     private Transform currentPatrolTarget;
 
@@ -38,19 +39,19 @@ public class EnemyBehavior : MonoBehaviour
     {
         // Move towards patrol point
         Vector3 desiredMoveDirection = modelParent.transform.forward;
-
+        
         // Apply the movement
         rb.MovePosition(transform.position + moveSpeed * Time.deltaTime * desiredMoveDirection);
     }  
 
     private void Rotate(Transform target)
     {
-        // Rotate towards target
+
     }
 
     private void SetNewPatrolPoint()
     {
-        Transform point = patrolPoints[Random.Range(0, patrolPoints.Length - 1)];
+        Transform point = patrolPoints[Random.Range(0, patrolPoints.Length)];
 
         currentPatrolTarget = point;
     }
