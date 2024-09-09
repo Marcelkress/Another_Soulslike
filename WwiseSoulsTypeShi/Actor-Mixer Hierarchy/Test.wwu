@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{1DA5F64D-52BF-40A7-A498-D490BB67B38A}" SchemaVersion="119">
+	<AudioObjects>
+		<WorkUnit Name="Test" ID="{1DA5F64D-52BF-40A7-A498-D490BB67B38A}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="TestLyd" ID="{E3457D9A-7CB0-4AB7-A05D-7FDDE2CD7CC9}" ShortID="818348046">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{6DF09741-7800-4611-B6CE-79605BF795D8}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{3FD72789-2231-421F-9E04-4297D9ADF92F}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Wood, Misc, Barrel, Casket, Open, Close, Lid SND51490" ID="{2A419041-8D53-4AC9-87D1-D6F6E134E921}">
+							<Language>SFX</Language>
+							<AudioFile>Wood, Misc, Barrel, Casket, Open, Close, Lid SND51490.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="147606972"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="Wood, Misc, Barrel, Casket, Open, Close, Lid SND51490" ID="{2A419041-8D53-4AC9-87D1-D6F6E134E921}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>
