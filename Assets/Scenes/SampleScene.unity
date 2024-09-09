@@ -6250,7 +6250,7 @@ MonoBehaviour:
   - {fileID: 1826396287}
   - {fileID: 870903857}
   modelParent: {fileID: 194249775}
-  moveSpeed: 1
+  moveSpeed: 2
   reachedPointThreshold: 0.5
   rotationSpeed: 0
 --- !u!54 &1275586667
