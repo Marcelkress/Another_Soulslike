@@ -239,7 +239,7 @@ public class Player_Controller : MonoBehaviour
         Vector3 desiredMoveDirection = forward * moveVector.y + right * moveVector.x;
 
         // Apply the movement
-        rb.MovePosition(transform.position + currentSpeed * Time.deltaTime * desiredMoveDirection);
+        rb.MovePosition(transform.position + currentSpeed * desiredMoveDirection * Time.deltaTime);
     }
 
     private void PerformLook()

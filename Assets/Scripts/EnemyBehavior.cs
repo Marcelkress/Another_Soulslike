@@ -10,6 +10,9 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private float reachedPointThreshold;
     [SerializeField] private float rotationSpeed;
 
+    // Vector used by the smoothdamp function. Needs to be initialized to zero 
+    // then is handled by the smoothdamp method
+    private Vector3 currentVelocity;    
     private Transform currentPatrolTarget;
 
     private Rigidbody rb;
@@ -18,35 +21,61 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        currentVelocity = Vector3.zero;
 
         SetNewPatrolPoint();
     }
 
     private void FixedUpdate()
     {
-        if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
-            SetNewPatrolPoint();
+        if(patrolPoints == null)
+            return;
 
-        else
+        if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
         {
-            Move();
-            Rotate(currentPatrolTarget);
+            SetNewPatrolPoint();
+            Rotate();
         }
-        
+
+        Move();
     }
 
     private void Move()
-    {
-        // Move towards patrol point
-        Vector3 desiredMoveDirection = modelParent.transform.forward;
-        
+    {   
+        // MoveDirection
+        Vector3 moveDireciton = (currentPatrolTarget.position - transform.position).normalized;
+
         // Apply the movement
-        rb.MovePosition(transform.position + moveSpeed * Time.deltaTime * desiredMoveDirection);
+        rb.MovePosition(transform.position + moveSpeed * Time.deltaTime * moveDireciton);
     }  
 
-    private void Rotate(Transform target)
+    private void Rotate()
     {
+        Vector3 targetVector = (currentPatrolTarget.position - modelParent.position).normalized;
 
+        StartCoroutine(SmoothRotate(targetVector));
+    }
+
+    private IEnumerator SmoothRotate(Vector3 targetVector)
+    {
+        float elapsedTime = 0f;
+
+        targetVector *= -1;
+
+        Quaternion targetRotation = Quaternion.LookRotation(targetVector);
+        Quaternion initialRotation = modelParent.localRotation;
+
+        targetRotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+
+        while (elapsedTime < rotationSpeed)
+        {
+            modelParent.localRotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / rotationSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final rotation is set
+        modelParent.localRotation = targetRotation;
     }
 
     private void SetNewPatrolPoint()
