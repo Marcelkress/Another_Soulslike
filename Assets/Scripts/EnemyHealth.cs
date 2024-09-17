@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour, IHealth

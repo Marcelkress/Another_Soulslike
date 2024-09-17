@@ -221,7 +221,6 @@ public class Player_Controller : MonoBehaviour
 
     private void PerformMove()
     {
-
         if(canMove == false)
             return;
 
