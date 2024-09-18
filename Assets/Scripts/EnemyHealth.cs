@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
@@ -18,8 +17,8 @@ public class EnemyHealth : MonoBehaviour, IHealth
     private Animator anim;
 
     // Take damage event and delegate
-    public UnityEvent deathEvent;
-    public UnityEvent damageEvent;
+    public UnityEvent DeathEvent;
+    public UnityEvent DamageEvent;
 
     [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
     private bool canTakeDamage;
@@ -41,14 +40,14 @@ public class EnemyHealth : MonoBehaviour, IHealth
         if(currentHealth <= 0)
         {
             anim.SetTrigger("Death");  
-            deathEvent?.Invoke();
+            DeathEvent?.Invoke();
 
             GetComponentInChildren<CapsuleCollider>().enabled = false;
 
             return;
         }
 
-        damageEvent?.Invoke();
+        DamageEvent?.Invoke();
         anim.SetTrigger("Take hit");
 
         canTakeDamage = false;

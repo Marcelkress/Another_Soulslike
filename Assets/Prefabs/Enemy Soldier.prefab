@@ -361,7 +361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6366502425002558838}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.97242236, z: -0, w: 0.23322709}
+  m_LocalRotation: {x: 0, y: 0.9724229, z: 0, w: 0.23322472}
   m_LocalPosition: {x: 34.94, y: 0.765, z: 50.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -435,10 +435,10 @@ MonoBehaviour:
   walkSpeed: 1
   minimumHealth: 0
   maxHealth: 100
-  deathEvent:
+  DeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  damageEvent:
+  DamageEvent:
     m_PersistentCalls:
       m_Calls: []
   damageCoolDown: 0.1
@@ -454,8 +454,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3066bf24e12ec4b13a77825eed14d092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   reachedPointThreshold: 0.5
+  cycle: 0
+  viewRadius: 15
+  viewAngle: 90
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!195 &8733797652340606904
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -469,7 +481,7 @@ NavMeshAgent:
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
