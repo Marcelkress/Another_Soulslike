@@ -144,7 +144,7 @@ public class EnemyBehavior : MonoBehaviour
             // Calculating angle formula
             float dotProduct = Vector3.Dot(directionToTarget, forward);
 
-            float angleInRadians = Mathf.Acos(dotProduct); // magnitudes);
+            float angleInRadians = Mathf.Acos(dotProduct);
 
             float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
 
