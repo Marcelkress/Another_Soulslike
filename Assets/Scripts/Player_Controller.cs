@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using System.ComponentModel;
 using UnityEngine.Events;
@@ -23,14 +22,14 @@ public class Player_Controller : MonoBehaviour
     private InputAction lockOnAction;
     private Rigidbody rb;
 
-    [Title("Attack")]
+    [Header("Attack")]
     [SerializeField] private float moveDelay;
     private bool canMove;
     private bool isAttacking;
     public int weaponDamage;
     public UnityEvent PlayerAttack;
 
-    [Title("Move")]
+    [Header("Move")]
     [SerializeField] private float walkSpeed;
     private Vector3 moveVector;
     [SerializeField] private float sprintSpeed;
@@ -44,27 +43,23 @@ public class Player_Controller : MonoBehaviour
     private float animFloatY;
     private bool canRot;
 
-    [Title("Look")]
+    [Header("Look")]
     [SerializeField] private GameObject cameraBoom;
     [SerializeField] private float sensitivity;
     private Vector2 lookVector;
     private float yRotation;
     private float xRotation;
     
-    [Title("Look min / max", horizontalLine: false, bold: false)]
-    [MinValue(-90)]
     [SerializeField] private int yMin = -85;
-
-    [MaxValue(90)]
     [SerializeField] private int yMax = 85;
 
-    [Title("Lock On")]
+    [Header("Lock On")]
     [SerializeField] private Transform lockOnObject;
     [SerializeField] private float lockOnRadius, lockOnDistance;
     [SerializeField] private LayerMask targetLayer;
     private bool lockedOn = false;
 
-    [Title("Jump")]
+    [Header("Jump")]
     [SerializeField] private float jumpForce;
     [SerializeField] private float castDistance;
     [SerializeField] private LayerMask groundLayer;

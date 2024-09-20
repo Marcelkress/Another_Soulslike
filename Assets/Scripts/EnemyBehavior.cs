@@ -2,27 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Sirenix.OdinInspector;
 
 public class EnemyBehavior : MonoBehaviour
 {
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private float reachedPointThreshold;
 
-    [DetailedInfoBox("Cycle or random",
-    "Specifies whether the enemy should choose patrol points at random, or cycle through them")]
     [SerializeField] private bool cycle; 
     [SerializeField] private float viewRadius, viewAngle;
-    [SerializeField] private int playerLayer;
+    [SerializeField] private LayerMask playerLayer;
 
-    enum EnemyState
+    [SerializeField] private GameObject modelParent;
+    public GameObject player;
+
+    public enum EnemyState
     {
+        idle,
         patrolling,
         chasing,
         dead
     }
 
-    private EnemyState currenState;
+    public EnemyState currentState;
     private NavMeshAgent agent;
     private Transform currentPatrolTarget;
     private Animator anim;
@@ -35,23 +36,9 @@ public class EnemyBehavior : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
 
-        currenState = EnemyState.patrolling;
+        currentState = EnemyState.patrolling;
 
         if(patrolPoints.Length != 0)
-        {
-            SetNewPatrolPoint();
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if(patrolPoints.Length == 0)
-        {
-            anim.SetBool("IsWalking", false);
-            return;
-        }
-
-        if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
         {
             SetNewPatrolPoint();
         }
@@ -61,40 +48,62 @@ public class EnemyBehavior : MonoBehaviour
     {
         CheckForAndSetStates();
 
-        switch (currenState)
+        switch (currentState)
         {
+            case EnemyState.idle:
+                Idle();
+                break;
+
             case EnemyState.patrolling:
                 Patrol();
                 break;
+
             case EnemyState.chasing:
-                // Call a chase method, haven't made yet.
-                Debug.Log("CHASING MFSSSS");
+                ChasePlayer();
                 break;
+
             case EnemyState.dead:
                 break;
-            default:
-                Patrol();
-            break;
         }
+    }
+
+    private void ChasePlayer()
+    {
+        InView(out Transform player);
+
+        agent.SetDestination(player.position);
     }
 
     private void CheckForAndSetStates()
     {
-        if(GetComponentInChildren<IHealth>() != null)
+       // Check if the enemy is dead
+        if (GetComponentInChildren<IHealth>() != null && GetComponentInChildren<IHealth>().GetCurrentHealth() <= 0)
         {
-            if(GetComponentInChildren<IHealth>().GetCurrentHealth() >= 0)
-            {
-                currenState = EnemyState.dead;
-            }
+            currentState = EnemyState.dead;
+            return; // Exit early if dead
         }
-        if(InView())
+        // Check if the player is in view
+        if (InView(out Transform player))
         {
-            currenState = EnemyState.chasing;
+            currentState = EnemyState.chasing;
         }
+        // Check if there are patrol points and the player is not in view
+        else if (patrolPoints.Length != 0)
+        {
+            currentState = EnemyState.patrolling;
+        }
+        // Set to idle if none of the above conditions are met
         else
         {
-            currenState = EnemyState.patrolling;
+            currentState = EnemyState.idle;
         }
+    }
+
+    private void Idle()
+    {
+        anim.SetBool("IsWalking", false);
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 
     private void Patrol()
@@ -102,6 +111,11 @@ public class EnemyBehavior : MonoBehaviour
         anim.SetBool("IsWalking", true);
 
         agent.SetDestination(currentPatrolTarget.position);
+
+        if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
+        {
+            SetNewPatrolPoint();
+        }
     } 
 
     private void SetNewPatrolPoint()
@@ -117,43 +131,58 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private bool InView()
+    private bool InView(out Transform player)
     {
-        // Perform a sphere cast to detect target
-        if (Physics.SphereCast(transform.position, viewRadius, transform.forward, out RaycastHit hit, viewRadius, playerLayer))
-        {   
-            Vector3 directionToTarget = (hit.transform.position - transform.position).normalized;
-            float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
+        player = null;
+        Collider[] targets = Physics.OverlapSphere(transform.position, viewRadius, playerLayer);
+        
+        foreach(Collider obj in targets)
+        {
+            Vector3 directionToTarget = (obj.transform.position - transform.position).normalized;
+            Vector3 forward = modelParent.transform.forward;
+            
+            // Calculating angle formula
+            float dotProduct = Vector3.Dot(directionToTarget, forward);
 
-            // Check if the target is within the field of view angle
-            if (angleToTarget < viewAngle / 2)
+            float angleInRadians = Mathf.Acos(dotProduct); // magnitudes);
+
+            float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
+
+            Debug.Log("Angle: " + angleInDegrees);
+            
+            if(Mathf.Abs(angleInDegrees) <= viewAngle)    
             {
-                Debug.Log("heahfeaf");
-                // Perform a line-of-sight check
-                if (!Physics.Linecast(transform.position, hit.transform.position, out RaycastHit lineHit))
+                if(Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, viewRadius))
                 {
-                    return true;
+                    if(hit.collider == obj)
+                    {
+                        player = hit.collider.gameObject.transform;
+                        return true;
+                    }
                 }
             }
-        }
 
+        }
+        player = null;
         return false;
     }
-
+        
     private void OnDrawGizmos()
     {
-        // Method used to draw the view in the scene
-        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, player.transform.position);
 
-        // Draw view radius
+        // Draw the detection range as a wire sphere
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewRadius);
 
-        // Calculate view angle boundaries
-        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * transform.forward * viewRadius;
-        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * transform.forward * viewRadius;
+        // Draw the 90-degree field of view
+        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle, 0) * transform.forward * viewRadius;
+        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle, 0) * transform.forward * viewRadius;
 
-        // Draw view angle lines
+        Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
     }
+
+    
 }

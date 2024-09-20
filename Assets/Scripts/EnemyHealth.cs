@@ -1,17 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour, IHealth
 {
     public int walkSpeed;
-
-    [Title("Health")]
-    [MinValue(0)]
     public int minimumHealth;
 
-    [MaxValue(1000)]
     public int maxHealth;
     private int currentHealth;
     private Animator anim;
