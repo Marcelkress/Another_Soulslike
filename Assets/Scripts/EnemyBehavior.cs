@@ -2,33 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    [Header("Patrol settings")]
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private float reachedPointThreshold;
-
     [SerializeField] private bool cycle; 
-    [SerializeField] private float viewRadius, viewAngle;
-    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float walkSpeed;
+    private NavMeshAgent agent;
+    private Transform currentPatrolTarget;
+    private int currentPatrolIndex = 0;
 
-    [SerializeField] private GameObject modelParent;
-    public GameObject player;
-
-    public enum EnemyState
+    private enum EnemyState
     {
         idle,
         patrolling,
         chasing,
+        attacking,
         dead
     }
 
-    public EnemyState currentState;
-    private NavMeshAgent agent;
-    private Transform currentPatrolTarget;
+    [Header("Attack and view settings")]
+    [SerializeField] private float chaseSpeed;
+    [SerializeField] private float viewRadius;
+    [SerializeField] private float viewAngle;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private GameObject modelParent;
+    [SerializeField] private EnemyState currentState;
+    [SerializeField] private float attackRange;
+    public UnityEvent AttackEvent;
     private Animator anim;
-    private int currentPatrolIndex = 0;
-
+    private bool playerSeen;
+    private Transform playerTransform;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +69,10 @@ public class EnemyBehavior : MonoBehaviour
             case EnemyState.chasing:
                 ChasePlayer();
                 break;
+            
+            case EnemyState.attacking:
+                Attack();
+                break;
 
             case EnemyState.dead:
                 break;
@@ -69,9 +81,11 @@ public class EnemyBehavior : MonoBehaviour
 
     private void ChasePlayer()
     {
-        InView(out Transform player);
+        agent.speed = chaseSpeed;
+        agent.isStopped = false;
 
-        agent.SetDestination(player.position);
+        anim.SetBool("IsChasing", true);
+        agent.SetDestination(playerTransform.position);
     }
 
     private void CheckForAndSetStates()
@@ -82,10 +96,19 @@ public class EnemyBehavior : MonoBehaviour
             currentState = EnemyState.dead;
             return; // Exit early if dead
         }
+        
         // Check if the player is in view
-        if (InView(out Transform player))
+        else if (SeenAndInRange() || InView())
         {
-            currentState = EnemyState.chasing;
+            //If the enemy is close enough to the player, attack
+            if(Vector3.Distance(transform.position, playerTransform.position) < attackRange)
+            {
+                currentState = EnemyState.attacking;
+            }
+            else
+            {
+                currentState = EnemyState.chasing;
+            }
         }
         // Check if there are patrol points and the player is not in view
         else if (patrolPoints.Length != 0)
@@ -99,8 +122,40 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    private bool SeenAndInRange()
+    {
+        if(InView() == true)
+        {
+            playerSeen = true;
+        }
+
+        if(playerSeen && Vector3.Distance(transform.position, playerTransform.position) < viewRadius)
+        {
+            return true;
+        } 
+        else
+        {
+            playerSeen = false;
+            return false;
+        }
+    }
+
+    private void Attack()
+    {
+        anim.SetBool("IsChasing", false);
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            return;
+        
+        anim.SetTrigger("Attack");
+        AttackEvent?.Invoke();
+        
+        agent.isStopped = true;
+    }
+
     private void Idle()
     {
+        anim.SetBool("IsChasing", false);
         anim.SetBool("IsWalking", false);
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
@@ -108,8 +163,12 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Patrol()
     {   
+        anim.SetBool("IsChasing", false);
         anim.SetBool("IsWalking", true);
 
+        agent.isStopped = false;
+
+        agent.speed = walkSpeed;
         agent.SetDestination(currentPatrolTarget.position);
 
         if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
@@ -131,9 +190,8 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private bool InView(out Transform player)
+    private bool InView()
     {
-        player = null;
         Collider[] targets = Physics.OverlapSphere(transform.position, viewRadius, playerLayer);
         
         foreach(Collider obj in targets)
@@ -147,8 +205,6 @@ public class EnemyBehavior : MonoBehaviour
             float angleInRadians = Mathf.Acos(dotProduct);
 
             float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
-
-            Debug.Log("Angle: " + angleInDegrees);
             
             if(Mathf.Abs(angleInDegrees) <= viewAngle)    
             {
@@ -156,21 +212,18 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     if(hit.collider == obj)
                     {
-                        player = hit.collider.gameObject.transform;
+                        playerTransform = hit.collider.gameObject.transform;
                         return true;
                     }
                 }
             }
 
         }
-        player = null;
         return false;
     }
         
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, player.transform.position);
-
         // Draw the detection range as a wire sphere
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewRadius);
@@ -183,6 +236,4 @@ public class EnemyBehavior : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
     }
-
-    
 }

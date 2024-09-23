@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 public class EnemyHealth : MonoBehaviour, IHealth
 {
-    public int walkSpeed;
-    public int minimumHealth;
-
     public int maxHealth;
     private int currentHealth;
     private Animator anim;
@@ -17,12 +15,14 @@ public class EnemyHealth : MonoBehaviour, IHealth
 
     [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
     private bool canTakeDamage;
+    private Animation[] uninterruptableAnims;
 
     private void OnEnable()
     {
         anim = GetComponentInChildren<Animator>();
         currentHealth = maxHealth;
         canTakeDamage = true;
+        DeathEvent.AddListener(TurnOffComponents);
     }
 
     public void TakeDamage(int damage)
@@ -36,17 +36,20 @@ public class EnemyHealth : MonoBehaviour, IHealth
         {
             anim.SetTrigger("Death");  
             DeathEvent?.Invoke();
-
-            GetComponentInChildren<CapsuleCollider>().enabled = false;
-
             return;
         }
 
         DamageEvent?.Invoke();
-        anim.SetTrigger("Take hit");
 
         canTakeDamage = false;
         StartCoroutine(DamageCoolDown());
+        
+        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            return;
+        
+
+
+        anim.SetTrigger("Take hit");
     }
 
     private IEnumerator DamageCoolDown()
@@ -58,5 +61,12 @@ public class EnemyHealth : MonoBehaviour, IHealth
     public int GetCurrentHealth()
     {
         return currentHealth;
+    }
+
+    private void TurnOffComponents()
+    {
+        Destroy(GetComponentInChildren<Collider>());
+        Destroy(GetComponent<EnemyBehavior>());
+        Destroy(GetComponent<NavMeshAgent>());
     }
 }

@@ -29,8 +29,9 @@ public class PlayerHealth : MonoBehaviour, IHealth
     public void TakeDamage(int damage)
     {
         anim.SetTrigger("Take Hit");
+
         currentHealth -= damage;
-        Debug.Log(currentHealth);
+
         takeDamageEvent?.Invoke();
     }
 }

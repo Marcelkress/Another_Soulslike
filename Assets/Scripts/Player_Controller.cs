@@ -32,6 +32,7 @@ public class Player_Controller : MonoBehaviour
     [Header("Move")]
     [SerializeField] private float walkSpeed;
     private Vector3 moveVector;
+    private bool isMoving;
     [SerializeField] private float sprintSpeed;
     private bool sprinting;
     private float currentSpeed;
@@ -84,8 +85,8 @@ public class Player_Controller : MonoBehaviour
         jumpAction.started += Jump;
 
         sprintAction = playerInput.actions["Sprint"];
-        sprintAction.started += Sprint;
-        sprintAction.canceled += Sprint;
+        sprintAction.started += SprintPerformed;
+        sprintAction.canceled += SprintCanceled;
 
         attackAction = playerInput.actions["Attack"];
         attackAction.started += Attack;
@@ -114,21 +115,22 @@ public class Player_Controller : MonoBehaviour
     private void Move(InputAction.CallbackContext context)
     {
         moveVector = context.ReadValue<Vector2>();
+        isMoving = moveVector != Vector3.zero;
     }
-    private void Sprint(InputAction.CallbackContext context)
+    private void SprintPerformed(InputAction.CallbackContext context)
     {
-        if(sprinting == false)
-        {
-            sprinting = true;
-            currentSpeed = sprintSpeed;
-            StartCoroutine(ChangeFloatOverTime(.5f, 1, transTimeToSprint));
-        }
-        else
-        {
-            sprinting = false;
-            currentSpeed = walkSpeed;
-            StartCoroutine(ChangeFloatOverTime(1, .5f, transTimeToSprint));
-        }
+        
+        sprinting = true;
+        currentSpeed = sprintSpeed;
+        StartCoroutine(ChangeFloatOverTime(.5f, 1, transTimeToSprint));
+        
+    }
+
+    private void SprintCanceled(InputAction.CallbackContext context)
+    {
+        sprinting = false;
+        currentSpeed = walkSpeed;
+        StartCoroutine(ChangeFloatOverTime(1, .5f, transTimeToSprint));
     }
 
     private void FixedUpdate()
