@@ -237,7 +237,6 @@ if (IsInstance())
 			AkSoundEngineController.Instance.LateUpdate();
 		}
 	}
-
 #region WwiseMigration
 #if UNITY_EDITOR
 #pragma warning disable 0414 // private field assigned but not used.

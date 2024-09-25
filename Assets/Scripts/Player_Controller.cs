@@ -119,15 +119,21 @@ public class Player_Controller : MonoBehaviour
     }
     private void SprintPerformed(InputAction.CallbackContext context)
     {
-        
         sprinting = true;
         currentSpeed = sprintSpeed;
+
+        if(moveVector == Vector3.zero)
+            return;
+        
         StartCoroutine(ChangeFloatOverTime(.5f, 1, transTimeToSprint));
         
     }
 
     private void SprintCanceled(InputAction.CallbackContext context)
     {
+        if(moveVector == Vector3.zero)
+            return;
+
         sprinting = false;
         currentSpeed = walkSpeed;
         StartCoroutine(ChangeFloatOverTime(1, .5f, transTimeToSprint));
