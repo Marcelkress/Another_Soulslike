@@ -142,6 +142,7 @@ public class Player_Controller : MonoBehaviour
     private void FixedUpdate()
     {   
         PerformMove();
+        PerformLook();
 
         if(moveVector != Vector3.zero || lockOnObject != null)
         {
@@ -205,7 +206,6 @@ public class Player_Controller : MonoBehaviour
 
     private void Update()
     {
-        PerformLook();
 
         // Canceling sprint if player stops moving
         if(moveVector == Vector3.zero)

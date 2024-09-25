@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 407938}
   - component: {fileID: 3327476}
   - component: {fileID: 2394932}
-  - component: {fileID: 64663320563585198}
-  - component: {fileID: 64427626524199614}
   - component: {fileID: 5948291089301619858}
+  - component: {fileID: 7296196645699152020}
   m_Layer: 0
   m_Name: SM_Env_Tree_02_Snow
   m_TagString: Untagged
@@ -86,50 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64663320563585198
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197738}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43802548714495164, guid: 46c7ceec4ded76143ade02aae60cd6bc, type: 2}
---- !u!64 &64427626524199614
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197738}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43477701281546938, guid: 46c7ceec4ded76143ade02aae60cd6bc, type: 2}
 --- !u!208 &5948291089301619858
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -146,3 +101,26 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.079, y: 2.14, z: 0.256}
   m_TimeToStationary: 0.5
+--- !u!136 &7296196645699152020
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2943352
+  m_Height: 4.2805376
+  m_Direction: 1
+  m_Center: {x: 0.06244778, y: 2.1402688, z: 0.052827388}
