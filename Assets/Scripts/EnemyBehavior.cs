@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -142,12 +143,16 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Attack()
     {
+        if(currentState == EnemyState.chasing)
+            return;
         
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Take hit"))
             return;
+
         anim.SetBool("IsChasing", false);
         
         anim.SetTrigger("Attack");
+        
         AttackEvent?.Invoke();
         
         agent.isStopped = true;
@@ -171,10 +176,11 @@ public class EnemyBehavior : MonoBehaviour
         agent.speed = walkSpeed;
         agent.SetDestination(currentPatrolTarget.position);
 
-        if(Vector3.Distance(transform.position, currentPatrolTarget.position) < reachedPointThreshold)
+        if(agent.remainingDistance <= reachedPointThreshold)
         {
             SetNewPatrolPoint();
         }
+
     } 
 
     private void SetNewPatrolPoint()
