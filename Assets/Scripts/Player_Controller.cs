@@ -8,7 +8,9 @@ using Unity.Mathematics;
 
 public class Player_Controller : MonoBehaviour
 {   
+    // Private variables
     private Animator anim;
+    private PlayerHealth playerHealth;
 
     // The input component on the player gameobject
     private PlayerInput playerInput;
@@ -20,6 +22,7 @@ public class Player_Controller : MonoBehaviour
     private InputAction sprintAction;
     private InputAction attackAction;
     private InputAction lockOnAction;
+    private InputAction dodgeRollAction;
     private Rigidbody rb;
 
     [Header("Attack")]
@@ -34,8 +37,8 @@ public class Player_Controller : MonoBehaviour
     private Vector3 moveVector;
     private bool isMoving;
     [SerializeField] private float sprintSpeed;
-    private bool sprinting;
-    private float currentSpeed;
+    private bool isSprinting;
+    public float currentSpeed;
     [SerializeField] private float transTimeToSprint;
     private bool changingFloat;
     [SerializeField] private Transform characterTransform;
@@ -58,22 +61,25 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private Transform lockOnObject;
     [SerializeField] private float lockOnRadius, lockOnDistance;
     [SerializeField] private LayerMask targetLayer;
-    private bool lockedOn = false;
+    private bool isLockedOn = false;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce;
     [SerializeField] private float castDistance;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float waitForJump = .2f;
+    [SerializeField] private float waitForJumpTime = .2f;
     private float timePassed;
     private bool canJump;
+
+    [Header("DodgeRoll")]
+    public float dodgeRollSpeed;
+
 
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         
-
         lookAction = playerInput.actions["Look"];
         lookAction.performed += Look;
 
@@ -94,17 +100,23 @@ public class Player_Controller : MonoBehaviour
         lockOnAction = playerInput.actions["LockOn"];
         lockOnAction.started += LockOn;
 
+        dodgeRollAction = playerInput.actions["DodgeRoll"];
+        dodgeRollAction.started += DodgeRoll;
     }
 
     private void Start()
     {
         canMove = true;
-        anim = GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody>();
         currentSpeed = walkSpeed;
         Cursor.lockState = CursorLockMode.Locked;
         changingFloat = false;
         canRot = true;
+        
+        anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
+        playerHealth = GetComponent<PlayerHealth>();
+
+        playerHealth.deathEvent.AddListener(DisableMovement);
     }
  
     private void Look(InputAction.CallbackContext context)
@@ -119,7 +131,7 @@ public class Player_Controller : MonoBehaviour
     }
     private void SprintPerformed(InputAction.CallbackContext context)
     {
-        sprinting = true;
+        isSprinting = true;
         currentSpeed = sprintSpeed;
 
         if(moveVector == Vector3.zero)
@@ -131,11 +143,12 @@ public class Player_Controller : MonoBehaviour
 
     private void SprintCanceled(InputAction.CallbackContext context)
     {
+        isSprinting = false;
+        currentSpeed = walkSpeed;
+
         if(moveVector == Vector3.zero)
             return;
 
-        sprinting = false;
-        currentSpeed = walkSpeed;
         StartCoroutine(ChangeFloatOverTime(1, .5f, transTimeToSprint));
     }
 
@@ -152,14 +165,24 @@ public class Player_Controller : MonoBehaviour
         SetAnimationParams();
     }
 
+    float animFloat;
+
     private void SetAnimationParams()
     {
+        anim.SetBool("IsLockedOn", isLockedOn);
+
+        if(Mathf.Abs(moveVector.x) > Mathf.Abs(moveVector.y))
+                animFloat = moveVector.x;
+            else
+                animFloat = moveVector.y;
+
         if(IsGrounded() == false)
         {
             anim.SetFloat("X", 0f);
             anim.SetFloat("Y", 0f);
         }
-        else if(sprinting == false)
+
+        else if(isSprinting == false)
         {
             anim.SetFloat("X", Mathf.Clamp(animFloatX, -.5f, .5f));
 
@@ -168,11 +191,14 @@ public class Player_Controller : MonoBehaviour
                 animFloatX = moveVector.x;
                 animFloatY = moveVector.y;
                 anim.SetFloat("Y", Mathf.Clamp(animFloatY, -.5f, .5f));
+
+                anim.SetFloat("MovementFloat", Mathf.Abs(Mathf.Clamp(animFloat, -.5f, .5f)));
             }   
         }
-        else if (sprinting == true)
+        else if (isSprinting == true)
         {
             animFloatX = moveVector.x;
+
             anim.SetFloat("X", animFloatX);
 
             if(changingFloat == false)
@@ -180,6 +206,7 @@ public class Player_Controller : MonoBehaviour
                 animFloatY = moveVector.y;
                 animFloatX = moveVector.x;
                 anim.SetFloat("Y", animFloatY);
+                anim.SetFloat("MovementFloat", Mathf.Abs(animFloat));
             }
         }
     }
@@ -189,12 +216,12 @@ public class Player_Controller : MonoBehaviour
         changingFloat = true;
 
         float elapsedTime = 0f;
-        animFloatY = initialValue;
+        animFloat = initialValue;
 
         while (elapsedTime < duration)
         {
-            animFloatY = Mathf.Lerp(initialValue, targetValue, elapsedTime / duration);
-            anim.SetFloat("Y", animFloatY);
+            animFloat = Mathf.Lerp(initialValue, targetValue, elapsedTime / duration);
+            anim.SetFloat("MovementFloat", Mathf.Abs(animFloat));
 
             elapsedTime += Time.deltaTime;
 
@@ -211,14 +238,23 @@ public class Player_Controller : MonoBehaviour
         if(moveVector == Vector3.zero)
         {
             currentSpeed = walkSpeed;
-            sprinting = false;
+            isSprinting = false;
         }
 
         // Jumping cooldown
         timePassed += Time.deltaTime;
-        if(timePassed > waitForJump)
+        if(timePassed > waitForJumpTime)
         {
             canJump = true;
+        }
+
+        // Making sure the player can't run backwards   
+        if(isLockedOn && moveVector.y < -.5)
+        {
+            if(isSprinting)
+            {
+                currentSpeed = walkSpeed;
+            }            
         }
     }
 
@@ -263,6 +299,11 @@ public class Player_Controller : MonoBehaviour
         yRotation -= mouseY;
         yRotation = Mathf.Clamp(yRotation, yMin, yMax);
         cameraBoom.transform.localRotation = Quaternion.Euler(yRotation, xRotation, 0f);
+    }
+
+    private void DodgeRoll(InputAction.CallbackContext context)
+    {
+        anim.SetTrigger("DodgeRoll");
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -372,19 +413,19 @@ public class Player_Controller : MonoBehaviour
     {
         Transform target = FindTargetWithinRadius();
 
-        if (target != null && lockedOn == false)
+        if (target != null && isLockedOn == false)
         {
             Debug.Log("Target found: " + target.name);
             lockOnObject = target;
-            lockedOn = true;
-            anim.SetBool("LockedOn", lockedOn);
+            isLockedOn = true;
+            anim.SetBool("isLockedOn", isLockedOn);
         }
         else
         {
             Debug.Log("no target :(");
             lockOnObject = null;
-            lockedOn = false;
-            anim.SetBool("LockedOn", lockedOn);
+            isLockedOn = false;
+            anim.SetBool("isLockedOn", isLockedOn);
 
         }
     }
@@ -411,4 +452,8 @@ public class Player_Controller : MonoBehaviour
         return closestTarget;
     }
 
+    private void DisableMovement()
+    {
+        this.enabled = false;
+    }
 }

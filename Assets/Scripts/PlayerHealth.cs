@@ -7,9 +7,12 @@ public class PlayerHealth : MonoBehaviour, IHealth
 {
     private int currentHealth;
     public int maxHealth;
+    public bool isInvincible; // Used for dodging
     private Animator anim;
 
     public UnityEvent takeDamageEvent;
+    public UnityEvent deathEvent;
+
     
     private void Awake()
     {
@@ -28,10 +31,20 @@ public class PlayerHealth : MonoBehaviour, IHealth
 
     public void TakeDamage(int damage)
     {
-        anim.SetTrigger("Take Hit");
+        if(isInvincible == true)
+            return;
 
         currentHealth -= damage;
 
-        takeDamageEvent?.Invoke();
+        if(currentHealth <= 0)
+        {
+            anim.SetTrigger("Death");
+            deathEvent?.Invoke();
+        }
+        else
+        {
+            anim.SetTrigger("Take Hit");
+            takeDamageEvent?.Invoke();
+        }
     }
 }

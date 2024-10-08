@@ -1,0 +1,4 @@
+repository "SoulsTypeShi@Snot@cloud"
+  path "/"
+    br "/main"
+    co "/main"

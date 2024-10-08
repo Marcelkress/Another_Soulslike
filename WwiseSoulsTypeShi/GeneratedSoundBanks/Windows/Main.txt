@@ -1,6 +1,0 @@
-Event	ID	Name			Wwise Object Path	Notes
-	2617416489	Level1_Ambience			\Ambience\Level1_Ambience	
-
-In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	787438738	Musical, Chime, Wind Chimes, Up SND45597	C:\Users\mig1\Desktop\UnityGames\SoulsTypeShi\WwiseSoulsTypeShi\.cache\Windows\SFX\Musical, Chime, Wind Chimes, Up SND45597_818F3B66.wem		\Actor-Mixer Hierarchy\Ambience\Level1\Lvl1Ambience\Musical, Chime, Wind Chimes, Up SND45597		653092
-

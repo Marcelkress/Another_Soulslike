@@ -148,8 +148,6 @@ public class EnemyBehavior : MonoBehaviour
         
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).IsName("Take hit"))
             return;
-
-        anim.SetBool("IsChasing", false);
         
         anim.SetTrigger("Attack");
         

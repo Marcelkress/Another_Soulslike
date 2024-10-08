@@ -46,8 +46,6 @@ public class EnemyHealth : MonoBehaviour, IHealth
         
         if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             return;
-        
-
 
         anim.SetTrigger("Take hit");
     }

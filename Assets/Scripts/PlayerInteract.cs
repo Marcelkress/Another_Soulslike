@@ -10,7 +10,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Vector3 rayOffset;
     [SerializeField] private Transform characterParent; // The parent object of all the knight meshes
     [SerializeField] private LayerMask interactLayer;
-     
+
+    private PlayerHealth playerHealth; 
     private PlayerInput playerInput;
     private InputAction interactAction;
     private Vector3 rayOrigin, rayDirection;
@@ -18,6 +19,10 @@ public class PlayerInteract : MonoBehaviour
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        playerHealth = GetComponent<PlayerHealth>();
+
+        playerHealth.deathEvent.AddListener(DisableInteract);
+
         interactAction = playerInput.actions["Interact"];
         interactAction.started += Interact;
     }
@@ -57,6 +62,11 @@ public class PlayerInteract : MonoBehaviour
         // Draw the ray in the Scene view
         Gizmos.color = Color.red;
         Gizmos.DrawRay(rayOrigin + rayOffset, rayDirection * interactRange);
+    }
+
+    private void DisableInteract()
+    {
+        this.enabled = false;
     }
 
 }
