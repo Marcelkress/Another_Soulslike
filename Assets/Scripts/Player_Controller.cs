@@ -311,7 +311,7 @@ public class Player_Controller : MonoBehaviour
         if(IsGrounded() == true && canJump == true)
         {
             anim.SetTrigger("Jump");
-            Vector3 jumpVector = new(rb.velocity.x, jumpForce, rb.velocity.z);
+            Vector3 jumpVector = new(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
             rb.AddForce(jumpVector, ForceMode.Impulse);
             timePassed = 0f;
         }
