@@ -129,6 +129,7 @@ public class Player_Controller : MonoBehaviour
         moveVector = context.ReadValue<Vector2>();
         isMoving = moveVector != Vector3.zero;
     }
+    
     private void SprintPerformed(InputAction.CallbackContext context)
     {
         isSprinting = true;
@@ -277,7 +278,7 @@ public class Player_Controller : MonoBehaviour
         Vector3 desiredMoveDirection = forward * moveVector.y + right * moveVector.x;
 
         // Apply the movement
-        rb.MovePosition(transform.position + currentSpeed * desiredMoveDirection * Time.deltaTime);
+        rb.MovePosition(transform.position + currentSpeed * Time.deltaTime * desiredMoveDirection);
     }
 
     private void PerformLook()
@@ -393,6 +394,7 @@ public class Player_Controller : MonoBehaviour
         // Ensure the final rotation is set
         characterTransform.localRotation = targetRotation;
     }
+
     private IEnumerator ResetAttackState(float delay)
     {
         yield return new WaitForSeconds(delay);

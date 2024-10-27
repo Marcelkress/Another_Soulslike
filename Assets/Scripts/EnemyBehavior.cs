@@ -15,15 +15,11 @@ public class EnemyBehavior : MonoBehaviour
     private NavMeshAgent agent;
     private Transform currentPatrolTarget;
     private int currentPatrolIndex = 0;
-
     private enum EnemyState
     {
-        idle,
-        patrolling,
-        chasing,
-        attacking,
-        dead
+        idle, patrolling, chasing, attacking, dead
     }
+    [SerializeField] private EnemyState currentState;
 
     [Header("Attack and view settings")]
     [SerializeField] private float chaseSpeed;
@@ -31,7 +27,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private float viewAngle;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private GameObject modelParent;
-    [SerializeField] private EnemyState currentState;
     [SerializeField] private float attackRange;
     public UnityEvent AttackEvent;
     private Animator anim;
@@ -45,7 +40,8 @@ public class EnemyBehavior : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
 
-        currentState = EnemyState.patrolling;
+        if(patrolPoints.Length != 0)
+            currentState = EnemyState.patrolling;
 
         if(patrolPoints.Length != 0)
         {
@@ -76,6 +72,10 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case EnemyState.dead:
+                break;
+            
+            default:
+                Idle();
                 break;
         }
     }
