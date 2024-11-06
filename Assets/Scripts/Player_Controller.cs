@@ -27,7 +27,7 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] private float moveDelay;
-    private bool canMove;
+    public bool canMove;
     private bool isAttacking;
     public int weaponDamage;
     public UnityEvent PlayerAttack;
@@ -196,6 +196,7 @@ public class Player_Controller : MonoBehaviour
                 anim.SetFloat("MovementFloat", Mathf.Abs(Mathf.Clamp(animFloat, -.5f, .5f)));
             }   
         }
+
         else if (isSprinting == true)
         {
             animFloatX = moveVector.x;
@@ -207,7 +208,7 @@ public class Player_Controller : MonoBehaviour
                 animFloatY = moveVector.y;
                 animFloatX = moveVector.x;
                 anim.SetFloat("Y", animFloatY);
-                anim.SetFloat("MovementFloat", Mathf.Abs(animFloat));
+                anim.SetFloat("MovementFloat", Mathf.Abs(1));
             }
         }
     }

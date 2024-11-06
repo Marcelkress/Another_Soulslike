@@ -43,8 +43,12 @@ public class PlayerHealth : MonoBehaviour, IHealth
         }
         else
         {
-            anim.SetTrigger("Take Hit");
             takeDamageEvent?.Invoke();
+
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName("Take Hit"))
+                return;
+            
+            anim.SetTrigger("Take Hit");
         }
     }
 }
