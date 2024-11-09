@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df5fa72669e1244189f4871c7844a0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 60
   DeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -472,7 +472,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   modelParent: {fileID: 2398179908598783880}
-  attackRange: 1.5
+  attackRange: 1
   AttackEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -490,9 +490,9 @@ NavMeshAgent:
   m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 270
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0.68
