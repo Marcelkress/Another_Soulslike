@@ -11787,7 +11787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 485100, guid: 5e1d462ffd80d7444837984e9e18388b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.3121636
+      value: -1.66
       objectReference: {fileID: 0}
     - target: {fileID: 485100, guid: 5e1d462ffd80d7444837984e9e18388b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -26052,6 +26052,18 @@ PrefabInstance:
       propertyPath: m_Shadows.m_Type
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1907814779936236893, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907814779936236893, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1907814779936236893, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3535789429335123882, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
       propertyPath: dodgeRollSpeed
       value: 4
@@ -26115,6 +26127,14 @@ PrefabInstance:
     - target: {fileID: 8175737840061477109, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9080281933977569130, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9080281933977569130, guid: c959bc12312194974ad1d09ea9d5b104, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
