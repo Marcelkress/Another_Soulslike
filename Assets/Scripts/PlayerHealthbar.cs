@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;   
 
 public class PlayerHealthbar : MonoBehaviour
@@ -16,10 +17,12 @@ public class PlayerHealthbar : MonoBehaviour
         slider.maxValue = ph.GetCurrentHealth();
         slider.value = ph.GetCurrentHealth();
         ph.takeDamageEvent.AddListener(AdjustHealthBar);
+        ph.deathEvent.AddListener(AdjustHealthBar);
     }
 
     private void AdjustHealthBar()
     {
         slider.value = ph.GetCurrentHealth();
     }
+
 }

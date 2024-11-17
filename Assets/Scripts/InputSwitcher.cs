@@ -15,6 +15,7 @@ public class InputSwitcher : MonoBehaviour
         input.SwitchCurrentActionMap("Player");
         
         tent = FindAnyObjectByType<TentInteract>();
+            
         if(tent != null)
         {
             tent.OpenUIEvent += SwitchToUIMap;

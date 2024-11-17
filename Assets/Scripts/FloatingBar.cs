@@ -16,6 +16,9 @@ public class FloatingBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainCam = Camera.main.gameObject.transform;
+
+
         slider = GetComponent<Slider>();
         if(GetComponentInParent<EnemyHealth>() != null)
         {
