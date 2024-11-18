@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
         playerHudCanvas.SetActive(true);
         currentState = GameState.playing;
         StartCoroutine(waitForInputActivate());
+
+        mainCamera.gameObject.GetComponent<Camera>().cullingMask += 1 << LayerMask.NameToLayer("UI");
     }
 
     private void Update()

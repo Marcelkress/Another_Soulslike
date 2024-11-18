@@ -30,7 +30,7 @@ public class EnemyHealth : MonoBehaviour, IHealth
     void Start()
     {
         enemyCount++;
-        Debug.Log(enemyCount);
+        //Debug.Log(enemyCount);
     }
 
     public void TakeDamage(int damage)
