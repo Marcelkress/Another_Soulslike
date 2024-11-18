@@ -15,14 +15,22 @@ public class EnemyHealth : MonoBehaviour, IHealth
 
     [SerializeField] private float damageCoolDown; // Time until enemy can take damage again
     private bool canTakeDamage;
-    private Animation[] uninterruptableAnims;
+
+    public static int enemyCount;
 
     private void OnEnable()
     {
+        enemyCount = 0;
         anim = GetComponentInChildren<Animator>();
         currentHealth = maxHealth;
         canTakeDamage = true;
         DeathEvent.AddListener(TurnOffComponents);
+    }
+
+    void Start()
+    {
+        enemyCount++;
+        Debug.Log(enemyCount);
     }
 
     public void TakeDamage(int damage)
@@ -36,6 +44,7 @@ public class EnemyHealth : MonoBehaviour, IHealth
         {
             anim.SetTrigger("Death");  
             DeathEvent?.Invoke();
+            enemyCount--;
             return;
         }
 

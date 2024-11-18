@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject menuCanvas;
     public GameObject playerHudCanvas;
+    public GameObject winText;
 
     [Header("Settings")]
     public int targetFramerate;
@@ -49,9 +50,18 @@ public class GameManager : MonoBehaviour
         StartCoroutine(waitForInputActivate());
     }
 
+    private void Update()
+    {
+        if(EnemyHealth.enemyCount == 0)
+        {
+            winText.SetActive(true);
+            StartCoroutine(WaitForReloadScene());
+        }
+    }
+
     public void OnDeath()
     {
-        StartCoroutine(WaitForReload());   
+        StartCoroutine(WaitForReloadScene());   
     }
 
     private IEnumerator waitForInputActivate()
@@ -60,7 +70,7 @@ public class GameManager : MonoBehaviour
         inputSwitcher.SwitchToPlayerMap();
     }
 
-    private IEnumerator WaitForReload()
+    private IEnumerator WaitForReloadScene()
     {
         yield return new WaitForSeconds(waitForReloadTime);
 
@@ -98,6 +108,4 @@ public class GameManager : MonoBehaviour
 
         mainCamera.localPosition = Vector3.zero;
     }
-
-
 }
