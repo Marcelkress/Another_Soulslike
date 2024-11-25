@@ -25,13 +25,11 @@ public class InputSwitcher : MonoBehaviour
     public void SwitchToUIMap()
     {
         input.SwitchCurrentActionMap("UI");
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void SwitchToPlayerMap()
     {
         input.SwitchCurrentActionMap("Player");
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnDestroy()

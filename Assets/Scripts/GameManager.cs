@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class GameManager : MonoBehaviour
     public Transform cameraPositionAtPlayer;
     public Transform cameraPositionAtMenu;
     public Transform ResetPosition;
+    public Button playButton; // Reference to the button
+
 
     public GameObject menuCanvas;
     public GameObject playerHudCanvas;
@@ -36,8 +40,10 @@ public class GameManager : MonoBehaviour
         inputSwitcher = player.GetComponent<InputSwitcher>();
         inputSwitcher.SwitchToUIMap();
         currentState = GameState.atMenu;
+        Cursor.lockState = CursorLockMode.None;
 
         Application.targetFrameRate = targetFramerate;
+        EventSystem.current.SetSelectedGameObject(playButton.gameObject);
     }
 
     public void OnPlay()
