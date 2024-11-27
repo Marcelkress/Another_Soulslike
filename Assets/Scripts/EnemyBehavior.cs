@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,8 +17,9 @@ public class EnemyBehavior : MonoBehaviour
     private int currentPatrolIndex = 0;
     private enum EnemyState
     {
-        idle, patrolling, chasing, attacking, dead
+        Idle, patrolling, chasing, attacking, dead
     }
+    
     [SerializeField] private EnemyState currentState;
 
     [Header("Attack and view settings")]
@@ -55,7 +56,7 @@ public class EnemyBehavior : MonoBehaviour
 
         switch (currentState)
         {
-            case EnemyState.idle:
+            case EnemyState.Idle:
                 Idle();
                 break;
 
@@ -116,10 +117,10 @@ public class EnemyBehavior : MonoBehaviour
         {
             currentState = EnemyState.patrolling;
         }
-        // Set to idle if none of the above conditions are met
+        // Set to Idle if none of the above conditions are met
         else
         {
-            currentState = EnemyState.idle;
+            currentState = EnemyState.Idle;
         }
     }
 
