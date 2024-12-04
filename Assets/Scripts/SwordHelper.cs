@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class SwordHelper : MonoBehaviour
 {
-    public void ToggleSword()
+    public void ActivateSword()
     {
-        GetComponentInChildren<Weapon>().ToggleSword();
+        GetComponentInChildren<Weapon>().ActivateDamage();
+    }
+    public void DeActivateSword()
+    {
+        GetComponentInChildren<Weapon>().TurnOffDamage();
     }
 }

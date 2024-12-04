@@ -9,29 +9,21 @@ public class Weapon : MonoBehaviour
     [SerializeField] private int damage;
     public Transform swordTip, swordBottom;
     public float damageCapsuleRadius;
-    private bool damageActive;
+    public bool damageActive;
 
     private void Start()
     {
-
         // Logic depending on parent objects
         if(GetComponentInParent<Player_Controller>() != null)
             damage = GetComponentInParent<Player_Controller>().weaponDamage;
 
         if(GetComponentInParent<EnemyHealth>() != null)
             GetComponentInParent<EnemyHealth>().DeathEvent.AddListener(TurnOffDamage);
-
-            
     }
-
-    public void ToggleSword()
-    {
-        damageActive = !damageActive;
-    }
-
+    
     void Update()
     {
-        if(damageActive)
+        if(damageActive == true)
         {
             CheckForHit();
         }
@@ -48,8 +40,14 @@ public class Weapon : MonoBehaviour
                 IHealth health = colliders[i].gameObject.GetComponentInParent<IHealth>();
 
                 health?.TakeDamage(damage);
+                damageActive = false;
             }
         }
+    }
+
+    public void ActivateDamage()
+    {
+        damageActive = true;
     }
 
     public void TurnOffDamage()
