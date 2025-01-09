@@ -40,7 +40,6 @@ public class Weapon : MonoBehaviour
                 IHealth health = colliders[i].gameObject.GetComponentInParent<IHealth>();
 
                 health?.TakeDamage(damage);
-                damageActive = false;
             }
         }
     }

@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 using System.ComponentModel;
 using UnityEngine.Events;
 using Unity.Mathematics;
@@ -108,7 +107,6 @@ public class Player_Controller : MonoBehaviour
     {
         canMove = true;
         currentSpeed = walkSpeed;
-        Cursor.lockState = CursorLockMode.Locked;
         changingFloat = false;
         canRot = true;
         

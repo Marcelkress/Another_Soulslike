@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
         inputSwitcher = player.GetComponent<InputSwitcher>();
         inputSwitcher.SwitchToUIMap();
         currentState = GameState.atMenu;
-        Cursor.lockState = CursorLockMode.None;
 
         Application.targetFrameRate = targetFramerate;
         EventSystem.current.SetSelectedGameObject(playButton.gameObject);
@@ -53,7 +52,8 @@ public class GameManager : MonoBehaviour
         menuCanvas.SetActive(false);
         playerHudCanvas.SetActive(true);
         currentState = GameState.playing;
-        StartCoroutine(waitForInputActivate());
+        StartCoroutine(WaitForInputActivate());
+        Cursor.lockState = CursorLockMode.Locked;
 
         mainCamera.gameObject.GetComponent<Camera>().cullingMask += 1 << LayerMask.NameToLayer("UI");
     }
@@ -72,9 +72,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(WaitForReloadScene());   
     }
 
-    private IEnumerator waitForInputActivate()
+    private IEnumerator WaitForInputActivate()
     {
-        yield return new WaitForSeconds(cameraLerpSpeed + 2);
+        yield return new WaitForSeconds(3);
         inputSwitcher.SwitchToPlayerMap();
     }
 
