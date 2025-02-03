@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour
 
         if(GetComponentInParent<EnemyHealth>() != null)
             GetComponentInParent<EnemyHealth>().DeathEvent.AddListener(TurnOffDamage);
+
+        float rand = Random.value;
     }
     
     void Update()
